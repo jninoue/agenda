@@ -1,5 +1,6 @@
 package br.uff.ic.agenda.view;
 
+import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -23,11 +24,11 @@ import javax.swing.event.ListSelectionListener;
 
 public class Agenda extends JFrame {
     
-    private DefaultListModel<Contato> contatos = new DefaultListModel<Contato>();
-    JList<Contato> listaContatos;
-    private JTextField campoNome;
-    private JTextField campoTelefone;
-    private JTextArea campoDetalhes;
+    private final DefaultListModel<Contato> contatos = new DefaultListModel<>();
+    private final JList<Contato> listaContatos = new JList<>(contatos);
+    private final JTextField campoNome = new JTextField();
+    private final JTextField campoTelefone = new JTextField();
+    private final JTextArea campoDetalhes = new JTextArea();
     
     public Agenda() {
         super("Agenda");
@@ -37,7 +38,6 @@ public class Agenda extends JFrame {
     private void montaJanela() {        
         // Criando um painel com a lista de contatos
         JPanel painelLista = new JPanel(new BorderLayout());
-        listaContatos = new JList<>(contatos);
         listaContatos.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -46,16 +46,14 @@ public class Agenda extends JFrame {
         });
         painelLista.setBorder(BorderFactory.createTitledBorder("Contatos"));
         painelLista.add(new JScrollPane(listaContatos), BorderLayout.CENTER);
-                
+                        
         // Criando um painel com o nome
         JPanel painelNome = new JPanel(new BorderLayout());
-        campoNome = new JTextField();
         painelNome.add(new JLabel("Nome:"), BorderLayout.WEST);        
         painelNome.add(campoNome, BorderLayout.CENTER);
         
         // Criando um painel com o telefone
         JPanel painelTelefone = new JPanel(new BorderLayout());
-        campoTelefone = new JTextField();
         painelTelefone.add(new JLabel("Telefone:"), BorderLayout.WEST);
         painelTelefone.add(campoTelefone, BorderLayout.CENTER);
         
@@ -66,13 +64,12 @@ public class Agenda extends JFrame {
         
         // Criando um painel com os detalhes
         JPanel painelDetalhes = new JPanel(new BorderLayout());
-        campoDetalhes = new JTextArea();
         painelDetalhes.setBorder(BorderFactory.createTitledBorder("Detalhes"));
         painelDetalhes.add(new JScrollPane(campoDetalhes), BorderLayout.CENTER);
         
         // Criando um painel com os botões
         JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(1, 3));
+        painelBotoes.setLayout(new GridLayout(1, 2));
         JButton botaoAdicionar = new JButton("Adicionar");
         botaoAdicionar.addActionListener(new ActionListener() {
             @Override
@@ -88,18 +85,9 @@ public class Agenda extends JFrame {
                 listaContatos.repaint();
             }
         });
-        JButton botaoSalvar = new JButton("Salvar");
-        botaoSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                salvaPessoa(listaContatos.getSelectedValue());
-                listaContatos.repaint();
-            }
-        });
         painelBotoes.add(botaoAdicionar);
         painelBotoes.add(botaoRemover);
-        painelBotoes.add(botaoSalvar);
-        
+
         // Criando um painel central que combina os campos de texto, a área de texto e os botões
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.add(painelCampos, BorderLayout.NORTH);
@@ -110,6 +98,14 @@ public class Agenda extends JFrame {
         JSplitPane painelPrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, painelLista, painelCentral);
         painelPrincipal.setDividerLocation(200);
         this.setContentPane(painelPrincipal);
+
+        // Configurando os listeners
+        ControleSalvar salvar = new ControleSalvar(listaContatos, campoNome, campoTelefone, campoDetalhes);
+        campoNome.addKeyListener(salvar);
+        campoTelefone.addKeyListener(salvar);
+        campoDetalhes.addKeyListener(salvar);
+
+        // Configuration a janela
         this.pack();
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
@@ -123,12 +119,6 @@ public class Agenda extends JFrame {
     
     private void removePessoa(Contato pessoaSelecionada) {
         contatos.removeElement(pessoaSelecionada);
-    }
-    
-    private void salvaPessoa(Contato pessoaSelecionada) {
-        pessoaSelecionada.setNome(campoNome.getText());
-        pessoaSelecionada.setTelefone(campoTelefone.getText());
-        pessoaSelecionada.setDetalhes(campoDetalhes.getText());
     }
     
     private void carregaPessoa(Contato pessoaSelecionada) {

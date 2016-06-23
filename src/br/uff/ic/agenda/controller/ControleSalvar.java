@@ -1,0 +1,34 @@
+package br.uff.ic.agenda.controller;
+
+import br.uff.ic.agenda.model.Contato;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class ControleSalvar extends KeyAdapter {
+
+    private final JList<Contato> listaContatos;
+    private final JTextField campoNome;
+    private final JTextField campoTelefone;
+    private final JTextArea campoDetalhes;
+    
+    public ControleSalvar (JList<Contato> listaContatos, JTextField campoNome, JTextField campoTelefone, JTextArea campoDetalhes) {
+        this.listaContatos = listaContatos;
+        this.campoNome = campoNome;
+        this.campoTelefone = campoTelefone;
+        this.campoDetalhes = campoDetalhes;
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
+        Contato pessoaSelecionada = listaContatos.getSelectedValue();
+        if (pessoaSelecionada != null) {
+            pessoaSelecionada.setNome(campoNome.getText());
+            pessoaSelecionada.setTelefone(campoTelefone.getText());
+            pessoaSelecionada.setDetalhes(campoDetalhes.getText());
+        }
+        listaContatos.repaint();        
+    }    
+}
