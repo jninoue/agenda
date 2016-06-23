@@ -1,12 +1,12 @@
 package br.uff.ic.agenda.model;
 
-public class Pessoa {
+public class Contato {
     private String nome;
     private String telefone;
     private String detalhes;
 
-    public Pessoa() {
-        nome = "Nova Pessoa";
+    public Contato() {
+        nome = "Novo Contato";
         telefone = "";
         detalhes = "";
     }

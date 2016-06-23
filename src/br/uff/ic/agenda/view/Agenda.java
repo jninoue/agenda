@@ -1,6 +1,6 @@
 package br.uff.ic.agenda.view;
 
-import br.uff.ic.agenda.model.Pessoa;
+import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ import javax.swing.event.ListSelectionListener;
 
 public class Agenda extends JFrame {
 
-    private DefaultListModel<Pessoa> contatos = new DefaultListModel<Pessoa>();
+    private DefaultListModel<Contato> contatos = new DefaultListModel<Contato>();
     private JTextField campoNome;
     private JTextField campoTelefone;
     private JTextArea campoDetalhes;
@@ -36,7 +36,7 @@ public class Agenda extends JFrame {
 
     private void iniciaComponentes(Container painelPrincipal) {
         painelPrincipal.setLayout(new BorderLayout());
-        JList<Pessoa> lista = new JList<>(contatos);
+        JList<Contato> lista = new JList<>(contatos);
         lista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -102,21 +102,21 @@ public class Agenda extends JFrame {
     }
 
     private void adicionaPessoa() {
-        Pessoa novaPessoa = new Pessoa();
+        Contato novaPessoa = new Contato();
         contatos.addElement(novaPessoa);
     }
 
-    private void removePessoa(Pessoa pessoaSelecionada) {
+    private void removePessoa(Contato pessoaSelecionada) {
         contatos.removeElement(pessoaSelecionada);
     }
 
-    private void salvaPessoa(Pessoa pessoaSelecionada) {
+    private void salvaPessoa(Contato pessoaSelecionada) {
         pessoaSelecionada.setNome(campoNome.getText());
         pessoaSelecionada.setTelefone(campoTelefone.getText());
         pessoaSelecionada.setDetalhes(campoDetalhes.getText());
     }
 
-    private void carregaPessoa(Pessoa pessoaSelecionada) {
+    private void carregaPessoa(Contato pessoaSelecionada) {
         if (pessoaSelecionada != null) {
             campoNome.setText(pessoaSelecionada.getNome());
             campoTelefone.setText(pessoaSelecionada.getTelefone());
