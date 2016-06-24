@@ -1,5 +1,6 @@
 package br.uff.ic.agenda.view;
 
+import br.uff.ic.agenda.controller.ControleAdicionar;
 import br.uff.ic.agenda.controller.ControleCarregar;
 import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
@@ -53,12 +54,7 @@ public class Agenda extends JFrame {
         } else {
             botaoAdicionar = new JButton("Adicionar");
         }
-        botaoAdicionar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adicionaPessoa();
-            }
-        }); 
+        botaoAdicionar.addActionListener(new ControleAdicionar(contatos)); 
         JButton botaoRemover;
         URL deleteURL = getClass().getResource("/toolbarButtonGraphics/general/Delete24.gif");
         if (deleteURL != null) {
@@ -123,12 +119,7 @@ public class Agenda extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
-    
-    private void adicionaPessoa() {
-        Contato novaPessoa = new Contato();
-        contatos.addElement(novaPessoa);
-    }
-    
+        
     private void removePessoa(Contato pessoaSelecionada) {
         contatos.removeElement(pessoaSelecionada);
     }
