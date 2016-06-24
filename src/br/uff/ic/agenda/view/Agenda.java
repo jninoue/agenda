@@ -2,6 +2,7 @@ package br.uff.ic.agenda.view;
 
 import br.uff.ic.agenda.controller.ControleAdicionar;
 import br.uff.ic.agenda.controller.ControleCarregar;
+import br.uff.ic.agenda.controller.ControleRemover;
 import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
@@ -22,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -42,33 +44,13 @@ public class Agenda extends JFrame {
     private void montaJanela() {        
         // Criando um painel com a lista de contatos
         JPanel painelLista = new JPanel(new BorderLayout());
-        listaContatos.addListSelectionListener(new ControleCarregar(listaContatos, campoNome, campoTelefone, campoDetalhes));
         painelLista.setBorder(BorderFactory.createTitledBorder("Contatos"));
+        listaContatos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         painelLista.add(new JScrollPane(listaContatos), BorderLayout.CENTER);
         
         // Criando um painel com os botões sob a lista
-        JButton botaoAdicionar;
-        URL addURL = getClass().getResource("/toolbarButtonGraphics/general/Add24.gif");
-        if (addURL != null) {
-            botaoAdicionar = new JButton(new ImageIcon(addURL));
-        } else {
-            botaoAdicionar = new JButton("Adicionar");
-        }
-        botaoAdicionar.addActionListener(new ControleAdicionar(contatos)); 
-        JButton botaoRemover;
-        URL deleteURL = getClass().getResource("/toolbarButtonGraphics/general/Delete24.gif");
-        if (deleteURL != null) {
-            botaoRemover = new JButton(new ImageIcon(deleteURL));
-        } else {
-            botaoRemover = new JButton("Remover");
-        }
-        botaoRemover.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removePessoa(listaContatos.getSelectedValue());
-                listaContatos.repaint();
-            }
-        });
+        JButton botaoAdicionar = new JButton(new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Add16.gif")));
+        JButton botaoRemover = new JButton(new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Delete16.gif")));
         JPanel painelBotoes = new JPanel(new GridLayout(1, 2));
         painelBotoes.add(botaoAdicionar);
         painelBotoes.add(botaoRemover);
@@ -108,6 +90,9 @@ public class Agenda extends JFrame {
         this.setContentPane(painelPrincipal);
 
         // Configurando os listeners
+        listaContatos.addListSelectionListener(new ControleCarregar(listaContatos, campoNome, campoTelefone, campoDetalhes));
+        botaoAdicionar.addActionListener(new ControleAdicionar(contatos)); 
+        botaoRemover.addActionListener(new ControleRemover(listaContatos, contatos));
         ControleSalvar salvar = new ControleSalvar(listaContatos, campoNome, campoTelefone, campoDetalhes);
         campoNome.addKeyListener(salvar);
         campoTelefone.addKeyListener(salvar);
@@ -119,11 +104,7 @@ public class Agenda extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
-        
-    private void removePessoa(Contato pessoaSelecionada) {
-        contatos.removeElement(pessoaSelecionada);
-    }
-    
+            
     public static void main(String[] args) {
         Agenda agenda = new Agenda();
         agenda.setVisible(true);

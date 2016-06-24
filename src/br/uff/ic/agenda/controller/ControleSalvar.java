@@ -23,11 +23,11 @@ public class ControleSalvar extends KeyAdapter {
     
     @Override
     public void keyReleased(KeyEvent e) {
-        Contato pessoaSelecionada = listaContatos.getSelectedValue();
-        if (pessoaSelecionada != null) {
-            pessoaSelecionada.setNome(campoNome.getText());
-            pessoaSelecionada.setTelefone(campoTelefone.getText());
-            pessoaSelecionada.setDetalhes(campoDetalhes.getText());
+        Contato contatoSelecionado = listaContatos.getSelectedValue();
+        if (contatoSelecionado != null) {
+            contatoSelecionado.setNome(campoNome.getText());
+            contatoSelecionado.setTelefone(campoTelefone.getText());
+            contatoSelecionado.setDetalhes(campoDetalhes.getText());
         }
         listaContatos.repaint();        
     }    

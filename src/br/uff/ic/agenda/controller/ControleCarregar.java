@@ -23,21 +23,21 @@ public class ControleCarregar implements ListSelectionListener {
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        Contato pessoaSelecionada = listaContatos.getSelectedValue();
+        Contato contatoSelecionado = listaContatos.getSelectedValue();
         
-        if (pessoaSelecionada != null) {
-            campoNome.setText(pessoaSelecionada.getNome());
-            campoTelefone.setText(pessoaSelecionada.getTelefone());
-            campoDetalhes.setText(pessoaSelecionada.getDetalhes());
+        if (contatoSelecionado != null) {
+            campoNome.setText(contatoSelecionado.getNome());
+            campoTelefone.setText(contatoSelecionado.getTelefone());
+            campoDetalhes.setText(contatoSelecionado.getDetalhes());
         } else {
             campoNome.setText("");
             campoTelefone.setText("");
             campoDetalhes.setText("");
         }
 
-        campoNome.setEnabled(pessoaSelecionada != null);
-        campoTelefone.setEnabled(pessoaSelecionada != null);
-        campoDetalhes.setEnabled(pessoaSelecionada != null);
+        campoNome.setEnabled(contatoSelecionado != null);
+        campoTelefone.setEnabled(contatoSelecionado != null);
+        campoDetalhes.setEnabled(contatoSelecionado != null);
 
         listaContatos.repaint();        
     }
