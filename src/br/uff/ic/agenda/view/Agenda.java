@@ -1,16 +1,13 @@
 package br.uff.ic.agenda.view;
 
 import br.uff.ic.agenda.controller.ControleAdicionar;
+import br.uff.ic.agenda.controller.ControlePersistencia;
 import br.uff.ic.agenda.controller.ControleCarregar;
 import br.uff.ic.agenda.controller.ControleRemover;
 import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -24,11 +21,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class Agenda extends JFrame {
+    
+    private static final String ICONE_ADICIONA = "/toolbarButtonGraphics/general/Add16.gif";
+    private static final String ICONE_REMOVE = "/toolbarButtonGraphics/general/Delete16.gif";
     
     private final DefaultListModel<Contato> contatos = new DefaultListModel<>();
     private final JList<Contato> listaContatos = new JList<>(contatos);
@@ -37,7 +34,7 @@ public class Agenda extends JFrame {
     private final JTextArea campoDetalhes = new JTextArea();
     
     public Agenda() {
-        super("Agenda");
+        super("Agenda");        
         montaJanela();
     }
     
@@ -49,8 +46,8 @@ public class Agenda extends JFrame {
         painelLista.add(new JScrollPane(listaContatos), BorderLayout.CENTER);
         
         // Criando um painel com os botões sob a lista
-        JButton botaoAdicionar = new JButton(new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Add16.gif")));
-        JButton botaoRemover = new JButton(new ImageIcon(getClass().getResource("/toolbarButtonGraphics/general/Delete16.gif")));
+        JButton botaoAdicionar = new JButton(new ImageIcon(getClass().getResource(ICONE_ADICIONA)));
+        JButton botaoRemover = new JButton(new ImageIcon(getClass().getResource(ICONE_REMOVE)));
         JPanel painelBotoes = new JPanel(new GridLayout(1, 2));
         painelBotoes.add(botaoAdicionar);
         painelBotoes.add(botaoRemover);
@@ -97,6 +94,7 @@ public class Agenda extends JFrame {
         campoNome.addKeyListener(salvar);
         campoTelefone.addKeyListener(salvar);
         campoDetalhes.addKeyListener(salvar);
+        this.addWindowListener(new ControlePersistencia(contatos));
 
         // Configuration a janela
         this.pack();
