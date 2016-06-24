@@ -1,5 +1,6 @@
 package br.uff.ic.agenda.view;
 
+import br.uff.ic.agenda.controller.ControleCarregar;
 import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
@@ -40,12 +41,7 @@ public class Agenda extends JFrame {
     private void montaJanela() {        
         // Criando um painel com a lista de contatos
         JPanel painelLista = new JPanel(new BorderLayout());
-        listaContatos.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                carregaPessoa(listaContatos.getSelectedValue());
-            }
-        });
+        listaContatos.addListSelectionListener(new ControleCarregar(listaContatos, campoNome, campoTelefone, campoDetalhes));
         painelLista.setBorder(BorderFactory.createTitledBorder("Contatos"));
         painelLista.add(new JScrollPane(listaContatos), BorderLayout.CENTER);
         
@@ -84,12 +80,14 @@ public class Agenda extends JFrame {
                         
         // Criando um painel com o nome
         JPanel painelNome = new JPanel(new BorderLayout());
-        painelNome.add(new JLabel("Nome:"), BorderLayout.WEST);        
+        painelNome.add(new JLabel("Nome:"), BorderLayout.WEST); 
+        campoNome.setEnabled(false);
         painelNome.add(campoNome, BorderLayout.CENTER);
         
         // Criando um painel com o telefone
         JPanel painelTelefone = new JPanel(new BorderLayout());
         painelTelefone.add(new JLabel("Telefone:"), BorderLayout.WEST);
+        campoTelefone.setEnabled(false);
         painelTelefone.add(campoTelefone, BorderLayout.CENTER);
         
         // Criando um painel que contem tanto o nome quanto o telefone
@@ -100,6 +98,7 @@ public class Agenda extends JFrame {
         // Criando um painel com os detalhes
         JPanel painelDetalhes = new JPanel(new BorderLayout());
         painelDetalhes.setBorder(BorderFactory.createTitledBorder("Detalhes"));
+        campoDetalhes.setEnabled(false);
         painelDetalhes.add(new JScrollPane(campoDetalhes), BorderLayout.CENTER);
 
         // Criando um painel central que combina os campos de texto, a área de texto e os botões
@@ -132,14 +131,6 @@ public class Agenda extends JFrame {
     
     private void removePessoa(Contato pessoaSelecionada) {
         contatos.removeElement(pessoaSelecionada);
-    }
-    
-    private void carregaPessoa(Contato pessoaSelecionada) {
-        if (pessoaSelecionada != null) {
-            campoNome.setText(pessoaSelecionada.getNome());
-            campoTelefone.setText(pessoaSelecionada.getTelefone());
-            campoDetalhes.setText(pessoaSelecionada.getDetalhes());
-        }
     }
     
     public static void main(String[] args) {
