@@ -3,13 +3,14 @@ package br.uff.ic.agenda.view;
 import br.uff.ic.agenda.controller.ControleSalvar;
 import br.uff.ic.agenda.model.Contato;
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -46,6 +48,39 @@ public class Agenda extends JFrame {
         });
         painelLista.setBorder(BorderFactory.createTitledBorder("Contatos"));
         painelLista.add(new JScrollPane(listaContatos), BorderLayout.CENTER);
+        
+        // Criando um painel com os botões sob a lista
+        JButton botaoAdicionar;
+        URL addURL = getClass().getResource("/toolbarButtonGraphics/general/Add24.gif");
+        if (addURL != null) {
+            botaoAdicionar = new JButton(new ImageIcon(addURL));
+        } else {
+            botaoAdicionar = new JButton("Adicionar");
+        }
+        botaoAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adicionaPessoa();
+            }
+        }); 
+        JButton botaoRemover;
+        URL deleteURL = getClass().getResource("/toolbarButtonGraphics/general/Delete24.gif");
+        if (deleteURL != null) {
+            botaoRemover = new JButton(new ImageIcon(deleteURL));
+        } else {
+            botaoRemover = new JButton("Remover");
+        }
+        botaoRemover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removePessoa(listaContatos.getSelectedValue());
+                listaContatos.repaint();
+            }
+        });
+        JPanel painelBotoes = new JPanel(new GridLayout(1, 2));
+        painelBotoes.add(botaoAdicionar);
+        painelBotoes.add(botaoRemover);
+        painelLista.add(painelBotoes, BorderLayout.SOUTH);
                         
         // Criando um painel com o nome
         JPanel painelNome = new JPanel(new BorderLayout());
@@ -66,33 +101,11 @@ public class Agenda extends JFrame {
         JPanel painelDetalhes = new JPanel(new BorderLayout());
         painelDetalhes.setBorder(BorderFactory.createTitledBorder("Detalhes"));
         painelDetalhes.add(new JScrollPane(campoDetalhes), BorderLayout.CENTER);
-        
-        // Criando um painel com os botões
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(1, 2));
-        JButton botaoAdicionar = new JButton("Adicionar");
-        botaoAdicionar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adicionaPessoa();
-            }
-        }); 
-        JButton botaoRemover = new JButton("Remover");
-        botaoRemover.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removePessoa(listaContatos.getSelectedValue());
-                listaContatos.repaint();
-            }
-        });
-        painelBotoes.add(botaoAdicionar);
-        painelBotoes.add(botaoRemover);
 
         // Criando um painel central que combina os campos de texto, a área de texto e os botões
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.add(painelCampos, BorderLayout.NORTH);
         painelCentral.add(painelDetalhes, BorderLayout.CENTER);
-        painelCentral.add(painelBotoes, BorderLayout.SOUTH);
         
         // Criando um painel do tipo split, que combina a lista com os demais componentes
         JSplitPane painelPrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, painelLista, painelCentral);
