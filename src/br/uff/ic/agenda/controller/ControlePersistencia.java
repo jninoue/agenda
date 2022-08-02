@@ -38,7 +38,7 @@ public class ControlePersistencia extends WindowAdapter {
     public void windowClosing(WindowEvent e) {
         try (FileOutputStream fileOut = new FileOutputStream(NOME_ARQUIVO);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(contatos.toArray());
+        	out.writeObject(contatos.toArray());
         } catch (IOException ex) {
             Logger.getLogger(ControlePersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

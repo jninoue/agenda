@@ -55,13 +55,13 @@ public class Agenda extends JFrame {
                         
         // Criando um painel com o nome
         JPanel painelNome = new JPanel(new BorderLayout());
-        painelNome.add(new JLabel("Nome:"), BorderLayout.WEST); 
+        painelNome.add(new JLabel("Nome: "), BorderLayout.WEST); 
         campoNome.setEnabled(false);
         painelNome.add(campoNome, BorderLayout.CENTER);
         
         // Criando um painel com o telefone
         JPanel painelTelefone = new JPanel(new BorderLayout());
-        painelTelefone.add(new JLabel("Telefone:"), BorderLayout.WEST);
+        painelTelefone.add(new JLabel("Telefone: "), BorderLayout.WEST);
         campoTelefone.setEnabled(false);
         painelTelefone.add(campoTelefone, BorderLayout.CENTER);
         
